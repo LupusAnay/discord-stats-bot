@@ -4,16 +4,16 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 946eafbeafbe55fa5dfbf61acc8d23bc0b5a38e500df7b99d26ca748d5a5f683
+-- hash: acc6fcc3ddffa03f58f98a3d1a593b7275a106924c1c8c79c9bded04db97371a
 
 name:           discord-stats-bot
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/Github username here/discord-stats-bot#readme>
-homepage:       https://github.com/Github username here/discord-stats-bot#readme
-bug-reports:    https://github.com/Github username here/discord-stats-bot/issues
-author:         Author name here
-maintainer:     Author email here
-copyright:      2019 Author name here
+description:    Please see the README on GitHub at <https://github.com/lupusanay/discord-stats-bot#readme>
+homepage:       https://github.com/lupusanay/discord-stats-bot#readme
+bug-reports:    https://github.com/lupusanay/discord-stats-bot/issues
+author:         Ilya Kopeshtianski
+maintainer:     lupusanay@gmail.com
+copyright:      2019 Ilya Kopeshtianski
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -23,32 +23,43 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/Github username here/discord-stats-bot
+  location: https://github.com/lupusanay/discord-stats-bot
 
 library
   exposed-modules:
       Lib
+      RiotAPI.Match
+      RiotAPI.Summoner
+      RiotAPI.Types
   other-modules:
       Paths_discord_stats_bot
   hs-source-dirs:
       src
+  default-extensions: DuplicateRecordFields OverloadedStrings DeriveGeneric
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , containers
+    , lens
+    , text
+    , wreq
   default-language: Haskell2010
-  extensions: DuplicateRecordFields
 
 executable discord-stats-bot-exe
   main-is: Main.hs
   other-modules:
-      Reeto
       Paths_discord_stats_bot
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
+    , containers
     , discord-stats-bot
+    , lens
+    , text
+    , wreq
   default-language: Haskell2010
 
 test-suite discord-stats-bot-test
@@ -60,6 +71,11 @@ test-suite discord-stats-bot-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
+    , containers
     , discord-stats-bot
+    , lens
+    , text
+    , wreq
   default-language: Haskell2010

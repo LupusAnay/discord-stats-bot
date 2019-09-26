@@ -1,6 +1,37 @@
-module Reeto where
+module RiotAPI.Types where
 
-import Data.Map as M
+import           Data.Aeson
+import           Data.Map     as M
+import           Data.Text    as T
+import           GHC.Generics (Generic)
+
+data Region
+  = BR
+  | EUNE
+  | EUW
+  | JP
+  | KR
+  | LAN
+  | LAS
+  | NA
+  | OCE
+  | TR
+  | RU
+  | PBE
+
+instance Show Region where
+  show BR   = "br1"
+  show EUNE = "eun1"
+  show EUW  = "euw1"
+  show JP   = "jp1"
+  show KR   = "kr"
+  show LAN  = "la1"
+  show LAS  = "la2"
+  show NA   = "na1"
+  show OCE  = "oc1"
+  show TR   = "tr1"
+  show RU   = "ru"
+  show PBE  = "pbe1"
 
 data Lane
   = Mid
@@ -9,6 +40,7 @@ data Lane
   | Jungle
   | Bot
   | Bottom
+  deriving (Show, Generic)
 
 data Role
   = Duo
@@ -16,10 +48,12 @@ data Role
   | Solo
   | DuoCarry
   | DuoSupport
+  deriving (Show, Generic)
 
 data Win
   = Fail
   | Win
+  deriving (Show, Generic)
 
 data Tier
   = Challenger
@@ -30,12 +64,14 @@ data Tier
   | Silver
   | Bronze
   | Unranked
+  deriving (Show, Generic)
 
 data ParticipantIdentity =
   ParticipantIdentity
     { player        :: Player
     , participantId :: Int
     }
+  deriving (Show, Generic)
 
 data ParticipantStats =
   ParticipantStats
@@ -148,6 +184,7 @@ data ParticipantStats =
     , totalMinionsKilled              :: Int
     , timeCCingOthers                 :: Integer
     }
+  deriving (Show, Generic)
 
 data Player =
   Player
@@ -160,12 +197,14 @@ data Player =
     , summonerId        :: String
     , accountId         :: String
     }
+  deriving (Show, Generic)
 
 data Ban =
   Ban
     { pickTurn   :: Int
     , championId :: Int
     }
+  deriving (Show, Generic)
 
 data Team =
   Team
@@ -186,12 +225,14 @@ data Team =
     , win                  :: Win
     , dragonKills          :: Int
     }
+  deriving (Show, Generic)
 
 data Rune =
   Rune
     { runeId :: Int
     , rank   :: Int
     }
+  deriving (Show, Generic)
 
 data ParticipantTimeline =
   ParticipantTimeline
@@ -206,6 +247,7 @@ data ParticipantTimeline =
     , damageTakenDiffPerMinDeltas :: M.Map String Double
     , damageTakenPerMinDeltas     :: M.Map String Double
     }
+  deriving (Show, Generic)
 
 data Participant =
   Participant
@@ -219,6 +261,7 @@ data Participant =
     , spell1Id                  :: Int
     , championId                :: Int
     }
+  deriving (Show, Generic)
 
 data Match =
   Match
@@ -236,3 +279,50 @@ data Match =
     , gameDuration          :: Integer
     , gameCreation          :: Integer
     }
+  deriving (Show, Generic)
+
+data Summoner =
+  Summoner
+    { profileIconId :: Int
+    , name          :: String
+    , puuid         :: String
+    , summonerLevel :: Integer
+    , revisionDate  :: Integer
+    , id            :: String
+    , accountId     :: String
+    }
+  deriving (Show, Generic)
+
+type ApiKey = T.Text
+
+type EncryptedAccountId = String
+
+type SummonerName = String
+
+instance FromJSON Match
+
+instance FromJSON ParticipantIdentity
+
+instance FromJSON Player
+
+instance FromJSON Team
+
+instance FromJSON Participant
+
+instance FromJSON Ban
+
+instance FromJSON ParticipantStats
+
+instance FromJSON Win
+
+instance FromJSON Rune
+
+instance FromJSON ParticipantTimeline
+
+instance FromJSON Lane
+
+instance FromJSON Tier
+
+instance FromJSON Role
+
+instance FromJSON Summoner
