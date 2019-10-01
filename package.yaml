@@ -4,7 +4,7 @@ github:              "lupusanay/discord-stats-bot"
 license:             BSD3
 author:              "Ilya Kopeshtianski"
 maintainer:          "lupusanay@gmail.com"
-copyright:           "2019 Ilya Copeshtianski"
+copyright:           "2019 Ilya Kopeshtianski"
 
 extra-source-files:
 - README.md

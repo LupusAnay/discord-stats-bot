@@ -35,7 +35,7 @@ library
       Paths_discord_stats_bot
   hs-source-dirs:
       src
-  default-extensions: DuplicateRecordFields OverloadedStrings DeriveGeneric
+  default-extensions: DuplicateRecordFields OverloadedStrings DeriveGeneric DeriveAnyClass
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -43,6 +43,8 @@ library
     , lens
     , text
     , wreq
+    , unordered-containers
+    , pretty-simple
   default-language: Haskell2010
 
 executable discord-stats-bot-exe

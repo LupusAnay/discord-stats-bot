@@ -1,9 +1,11 @@
 module RiotAPI.Types where
 
 import           Data.Aeson
-import           Data.Map     as M
-import           Data.Text    as T
-import           GHC.Generics (Generic)
+import           Data.Char           (toUpper)
+import qualified Data.HashMap.Strict as HM
+import qualified Data.Map            as M
+import qualified Data.Text           as T
+import           GHC.Generics        (Generic)
 
 data Region
   = BR
@@ -42,6 +44,11 @@ data Lane
   | Bottom
   deriving (Show, Generic)
 
+instance FromJSON Lane where
+  parseJSON = genericParseJSON opts
+    where
+      opts = defaultOptions {constructorTagModifier = map toUpper}
+
 data Role
   = Duo
   | None
@@ -50,10 +57,15 @@ data Role
   | DuoSupport
   deriving (Show, Generic)
 
+instance FromJSON Role where
+  parseJSON = genericParseJSON opts
+    where
+      opts = defaultOptions {constructorTagModifier = map toUpper . camelTo2 '_'}
+
 data Win
   = Fail
   | Win
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Tier
   = Challenger
@@ -66,12 +78,17 @@ data Tier
   | Unranked
   deriving (Show, Generic)
 
+instance FromJSON Tier where
+  parseJSON = genericParseJSON opts
+    where
+      opts = defaultOptions {constructorTagModifier = map toUpper}
+
 data ParticipantIdentity =
   ParticipantIdentity
     { player        :: Player
     , participantId :: Int
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data ParticipantStats =
   ParticipantStats
@@ -86,7 +103,7 @@ data ParticipantStats =
     , perk1Var2                       :: Int
     , tripleKills                     :: Int
     , perk3Var3                       :: Int
-    , nodeNeutralizeAssist            :: Int
+    , nodeNeutralizeAssist            :: Maybe Int
     , perk3Var2                       :: Int
     , playerScore9                    :: Int
     , playerScore8                    :: Int
@@ -106,7 +123,7 @@ data ParticipantStats =
     , neutralMinionsKilled            :: Int
     , damageDealtToTurrets            :: Integer
     , physicalDamageDealtToChampions  :: Integer
-    , nodeCapture                     :: Int
+    , nodeCapture                     :: Maybe Int
     , largestMultiKill                :: Int
     , perk2Var2                       :: Int
     , perk2Var3                       :: Int
@@ -119,7 +136,7 @@ data ParticipantStats =
     , largestCriticalStrike           :: Int
     , largestKillingSpree             :: Int
     , quadraKills                     :: Int
-    , teamObjective                   :: Int
+    , teamObjective                   :: Maybe Int
     , magicDamageDealt                :: Integer
     , item2                           :: Int
     , item3                           :: Int
@@ -139,7 +156,7 @@ data ParticipantStats =
     , magicalDamageTaken              :: Integer
     , firstInhibitorKill              :: Bool
     , trueDamageTaken                 :: Integer
-    , nodeNeutralize                  :: Int
+    , nodeNeutralize                  :: Maybe Int
     , assists                         :: Int
     , combatPlayerScore               :: Int
     , perkPrimaryStyle                :: Int
@@ -166,25 +183,25 @@ data ParticipantStats =
     , goldEarned                      :: Int
     , killingSprees                   :: Int
     , unrealKills                     :: Int
-    , altarsCaptured                  :: Int
+    , altarsCaptured                  :: Maybe Int
     , firstTowerAssist                :: Bool
     , firstTowerKill                  :: Bool
     , champLevel                      :: Int
     , doubleKills                     :: Int
-    , nodeCaptureAssist               :: Int
+    , nodeCaptureAssist               :: Maybe Int
     , inhibitorKills                  :: Int
     , firstInhibitorAssist            :: Bool
     , perk0Var1                       :: Int
     , perk0Var2                       :: Int
     , perk0Var3                       :: Int
     , visionWardsBoughtInGame         :: Int
-    , altarsNeutralized               :: Int
+    , altarsNeutralized               :: Maybe Int
     , pentaKills                      :: Int
     , totalHeal                       :: Integer
     , totalMinionsKilled              :: Int
     , timeCCingOthers                 :: Integer
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Player =
   Player
@@ -197,14 +214,14 @@ data Player =
     , summonerId        :: String
     , accountId         :: String
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Ban =
   Ban
     { pickTurn   :: Int
     , championId :: Int
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Team =
   Team
@@ -225,14 +242,14 @@ data Team =
     , win                  :: Win
     , dragonKills          :: Int
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Rune =
   Rune
     { runeId :: Int
     , rank   :: Int
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data ParticipantTimeline =
   ParticipantTimeline
@@ -247,21 +264,21 @@ data ParticipantTimeline =
     , damageTakenDiffPerMinDeltas :: M.Map String Double
     , damageTakenPerMinDeltas     :: M.Map String Double
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Participant =
   Participant
     { stats                     :: ParticipantStats
     , participantId             :: Int
-    , runes                     :: [Rune]
-    , timeline                  :: [ParticipantTimeline]
+    , runes                     :: Maybe [Rune]
+    , timeline                  :: ParticipantTimeline
     , teamId                    :: Int
     , spell2Id                  :: Int
-    , highestAchievedSeasonTier :: Tier
+    , highestAchievedSeasonTier :: Maybe Tier
     , spell1Id                  :: Int
     , championId                :: Int
     }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 data Match =
   Match
@@ -279,50 +296,10 @@ data Match =
     , gameDuration          :: Integer
     , gameCreation          :: Integer
     }
-  deriving (Show, Generic)
-
-data Summoner =
-  Summoner
-    { profileIconId :: Int
-    , name          :: String
-    , puuid         :: String
-    , summonerLevel :: Integer
-    , revisionDate  :: Integer
-    , id            :: String
-    , accountId     :: String
-    }
-  deriving (Show, Generic)
+  deriving (Show, Generic, FromJSON)
 
 type ApiKey = T.Text
 
 type EncryptedAccountId = String
 
 type SummonerName = String
-
-instance FromJSON Match
-
-instance FromJSON ParticipantIdentity
-
-instance FromJSON Player
-
-instance FromJSON Team
-
-instance FromJSON Participant
-
-instance FromJSON Ban
-
-instance FromJSON ParticipantStats
-
-instance FromJSON Win
-
-instance FromJSON Rune
-
-instance FromJSON ParticipantTimeline
-
-instance FromJSON Lane
-
-instance FromJSON Tier
-
-instance FromJSON Role
-
-instance FromJSON Summoner

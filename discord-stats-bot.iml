@@ -114,5 +114,8 @@
     <orderEntry type="library" name="asn1-parse-0.9.4" level="project" />
     <orderEntry type="library" name="pem-0.2.4" level="project" />
     <orderEntry type="library" name="void-0.7.3" level="project" />
+    <orderEntry type="library" name="pretty-simple-2.2.0.1" level="project" />
+    <orderEntry type="library" name="ansi-terminal-0.9.1" level="project" />
+    <orderEntry type="library" name="colour-2.3.5" level="project" />
   </component>
 </module>
