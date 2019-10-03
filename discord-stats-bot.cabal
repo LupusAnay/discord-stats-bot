@@ -31,6 +31,9 @@ library
       RiotAPI.Match
       RiotAPI.Summoner
       RiotAPI.Types
+      RiotAPI.Data.MatchLists
+      RiotAPI.Data.Matches
+      RiotAPI.Data.Summoners
   other-modules:
       Paths_discord_stats_bot
   hs-source-dirs:
