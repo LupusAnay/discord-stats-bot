@@ -29,6 +29,7 @@ library
   exposed-modules:
       Lib
       RiotAPI.Match
+      RiotAPI.Request
       RiotAPI.Summoner
       RiotAPI.Types
       RiotAPI.Data.MatchLists
